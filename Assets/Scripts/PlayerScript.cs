@@ -70,10 +70,16 @@ public class PlayerScript : MonoBehaviour {
 	void FixedUpdate()
 	{
 		rigidbody2D.AddForce( movement );
+
 	}
 
 	public bool hasShieldUp
 	{
 		get { return isShielded; }
+	}
+
+	public void ResetShield()
+	{
+		currentShield = maxShield;
 	}
 }

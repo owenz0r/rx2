@@ -9,9 +9,19 @@ public class HealthScript : MonoBehaviour {
 	{
 		health -= damageCount;
 		if( health <= 0 )
-			Destroy( gameObject );
+		{
+			ComponentToggle( false );
+			RespawnScript rs = GetComponent< RespawnScript >();
+			rs.beginRespawn();
+		}
 	}
 
+	public void ComponentToggle( bool onoff )
+	{
+		gameObject.renderer.enabled = onoff;
+		GetComponent< PlayerScript >().enabled = onoff;
+		GetComponent< CircleCollider2D >().enabled = onoff;
+	}
 
 	void OnTriggerEnter2D( Collider2D otherCollider )
 	{

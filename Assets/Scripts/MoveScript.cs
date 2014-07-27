@@ -8,13 +8,10 @@ public class MoveScript : MonoBehaviour {
 
 	private Vector2 movement;
 
-	void Update()
+	void Start()
 	{
 		movement = new Vector2( speed.x * direction.x, speed.y * direction.y );
-	}
-
-	void FixedUpdate()
-	{
 		rigidbody2D.velocity = movement;
 	}
+	
 }
