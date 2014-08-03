@@ -96,7 +96,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 31483956}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .19245711, y: -1.12988698, z: .00952148438}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 959603444}
@@ -294,6 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 1
+  scoreScript: {fileID: 1590255496}
 --- !u!58 &316821672
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -422,6 +423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 1
+  scoreScript: {fileID: 959603445}
 --- !u!114 &387220289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -657,6 +659,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 959603444}
   - 114: {fileID: 959603443}
+  - 114: {fileID: 959603445}
   m_Layer: 0
   m_Name: blueScripts
   m_TagString: Untagged
@@ -692,6 +695,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 31483958}
   m_RootOrder: 0
+--- !u!114 &959603445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 959603442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dd1ca0419d534e498a4fc840ba321e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pos: {x: 200, y: 15}
+  size: {x: 500, y: 100}
+  colour: {r: 0, g: .0313725509, b: .996078432, a: 0}
 --- !u!1 &1036741007
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,6 +1012,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1590255494}
   - 114: {fileID: 1590255495}
+  - 114: {fileID: 1590255496}
   m_Layer: 0
   m_Name: redScripts
   m_TagString: Untagged
@@ -1030,6 +1048,20 @@ MonoBehaviour:
   pos: {x: 1300, y: 40}
   size: {x: 400, y: 24}
   flip: 1
+--- !u!114 &1590255496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1590255493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dd1ca0419d534e498a4fc840ba321e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pos: {x: 1690, y: 15}
+  size: {x: 500, y: 100}
+  colour: {r: .996078432, g: 0, b: 0, a: 0}
 --- !u!1 &1600886326
 GameObject:
   m_ObjectHideFlags: 0

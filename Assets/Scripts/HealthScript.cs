@@ -4,12 +4,14 @@ using System.Collections;
 public class HealthScript : MonoBehaviour {
 
 	public int health = 1;
+	public ScoreScript scoreScript;
 
 	public void Damage( int damageCount )
 	{
 		health -= damageCount;
 		if( health <= 0 )
 		{
+			scoreScript.incrementScore();
 			ComponentToggle( false );
 			RespawnScript rs = GetComponent< RespawnScript >();
 			rs.beginRespawn();

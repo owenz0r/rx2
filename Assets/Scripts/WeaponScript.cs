@@ -37,7 +37,8 @@ public class WeaponScript : MonoBehaviour {
 	{
 		get
 		{
-			return shootCooldown <= 0.0f;
+			// can fire only if no cooldown and shields are not up
+			return ( shootCooldown <= 0.0f && !GetComponentInParent< PlayerScript >().hasShieldUp );
 		}
 	}
 }

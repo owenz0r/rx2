@@ -31,7 +31,6 @@ public class ShieldBarScript : MonoBehaviour {
 			GUI.Box ( new Rect( 0, 0, size.x, size.y ), progressBarFull );
 		}
 		GUI.EndGroup ();
-
 	}
 
 }
