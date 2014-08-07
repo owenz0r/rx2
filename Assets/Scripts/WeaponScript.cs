@@ -4,6 +4,7 @@ using System.Collections;
 public class WeaponScript : MonoBehaviour {
 
 	public Transform shotPrefab;
+	public PregameScript pregameScript;
 	public float shootingRate = 0.25f;
 
 	private float shootCooldown;
@@ -38,7 +39,9 @@ public class WeaponScript : MonoBehaviour {
 		get
 		{
 			// can fire only if no cooldown and shields are not up
-			return ( shootCooldown <= 0.0f && !GetComponentInParent< PlayerScript >().hasShieldUp );
+			return ( shootCooldown <= 0.0f && 
+			        !GetComponentInParent< PlayerScript >().hasShieldUp &&
+			        !pregameScript.isPregame);
 		}
 	}
 }

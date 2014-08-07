@@ -82,6 +82,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 31483958}
+  - 114: {fileID: 31483957}
   m_Layer: 0
   m_Name: scripts
   m_TagString: Untagged
@@ -89,6 +90,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &31483957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 31483956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7102fb8bbf006f749954c47e558d959b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPregame: 1
 --- !u!4 &31483958
 Transform:
   m_ObjectHideFlags: 0
@@ -649,6 +662,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 400000, guid: 1d17503d1d326e348bfc0a26d49a6bce, type: 2}
+  pregameScript: {fileID: 31483957}
   shootingRate: .25
 --- !u!1 &959603442
 GameObject:
@@ -680,8 +694,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   barDisplay: 100
   progressBarFull: {fileID: 2800000, guid: 54a82dd827df7ea4aa3b8c82801dba28, type: 3}
-  pos: {x: 200, y: 40}
-  size: {x: 400, y: 24}
+  pos: {x: 10, y: 5}
+  size: {x: 20, y: 5}
   flip: 0
 --- !u!4 &959603444
 Transform:
@@ -706,8 +720,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dd1ca0419d534e498a4fc840ba321e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pos: {x: 200, y: 15}
-  size: {x: 500, y: 100}
+  pos: {x: 10, y: 2}
+  size: {x: 10, y: 5}
   colour: {r: 0, g: .0313725509, b: .996078432, a: 0}
   flip: 0
 --- !u!1 &1036741007
@@ -929,6 +943,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 400000, guid: 1d17503d1d326e348bfc0a26d49a6bce, type: 2}
+  pregameScript: {fileID: 31483957}
   shootingRate: .25
 --- !u!1 &1555239616
 GameObject:
@@ -1046,8 +1061,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   barDisplay: 100
   progressBarFull: {fileID: 2800000, guid: f50ec87ec5786b449966a11289207802, type: 3}
-  pos: {x: 1300, y: 40}
-  size: {x: 400, y: 24}
+  pos: {x: 70, y: 5}
+  size: {x: 20, y: 5}
   flip: 1
 --- !u!114 &1590255496
 MonoBehaviour:
@@ -1060,8 +1075,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dd1ca0419d534e498a4fc840ba321e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pos: {x: 1200, y: 15}
-  size: {x: 500, y: 100}
+  pos: {x: 80, y: 2}
+  size: {x: 10, y: 5}
   colour: {r: .996078432, g: 0, b: 0, a: 0}
   flip: 1
 --- !u!1 &1600886326
