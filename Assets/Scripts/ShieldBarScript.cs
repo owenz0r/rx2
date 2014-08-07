@@ -21,14 +21,23 @@ public class ShieldBarScript : MonoBehaviour {
 	void OnGUI()
 	{
 		GUI.skin = skin;
+		float x = pos.x / 100.0f;
+		x = x * Screen.width;
+		float y = pos.y / 100.0f;
+		y = y * Screen.height;
+
+		float sx = size.x / 100.0f;
+		sx = sx * Screen.width;
+		float sy = size.y / 100.0f;
+		sy = sy * Screen.height;
 
 		if( flip )
 		{
-			GUI.BeginGroup ( new Rect( pos.x, pos.y, size.x, size.y ));
-			GUI.Box ( new Rect( size.x * ( (100.0f - barDisplay) / 100.0f ), 0, size.x, size.y ), progressBarFull );
+			GUI.BeginGroup ( new Rect( x, y, sx, sy ));
+			GUI.Box ( new Rect( sx * ( (100.0f - barDisplay) / 100.0f ), 0, sx, sy ), progressBarFull );
 		} else {
-			GUI.BeginGroup ( new Rect( pos.x, pos.y, size.x * ( barDisplay / 100.0f ), size.y ));
-			GUI.Box ( new Rect( 0, 0, size.x, size.y ), progressBarFull );
+			GUI.BeginGroup ( new Rect( x, y, sx * ( barDisplay / 100.0f ), sy ));
+			GUI.Box ( new Rect( 0, 0, sx, sy ), progressBarFull );
 		}
 		GUI.EndGroup ();
 	}

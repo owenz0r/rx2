@@ -27,7 +27,16 @@ public class ScoreScript : MonoBehaviour {
 		} else {
 			labelStyle.alignment = TextAnchor.UpperLeft;
 		}
-		GUI.Label ( new Rect( pos.x, pos.y, size.x, size.y ), score.ToString(), labelStyle );
+
+		float x = pos.x / 100.0f;
+		x = x * Screen.width;
+		float y = pos.y / 100.0f;
+		y = y * Screen.height;
+		float sx = size.x / 100.0f;
+		sx = sx * Screen.width;
+		float sy = size.y / 100.0f;
+		sy = sy * Screen.height;
+		GUI.Label ( new Rect( x, y, sx, sy ), score.ToString(), labelStyle );
 
 	}
 
