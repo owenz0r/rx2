@@ -31,6 +31,8 @@ public class WeaponScript : MonoBehaviour {
 			MoveScript move = shotTransform.gameObject.GetComponent< MoveScript >();
 			if( move != null )
 				move.direction = this.transform.right;
+
+			SoundEffectsHelper.Instance.MakeLaserFireSound();
 		}
 	}
 

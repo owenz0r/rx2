@@ -83,6 +83,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 31483958}
   - 114: {fileID: 31483957}
+  - 114: {fileID: 31483959}
   m_Layer: 0
   m_Name: scripts
   m_TagString: Untagged
@@ -116,6 +117,19 @@ Transform:
   - {fileID: 1590255494}
   m_Father: {fileID: 0}
   m_RootOrder: 3
+--- !u!114 &31483959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 31483956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b4a729f4d4617946b462f1257101246, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  laserFireSound: {fileID: 8300000, guid: 27c95124b0360a34f978ff67b956aee1, type: 3}
+  shieldHitSound: {fileID: 8300000, guid: 8adb73a1144c60c45be71470121de5ff, type: 3}
 --- !u!1 &169145314
 GameObject:
   m_ObjectHideFlags: 0
