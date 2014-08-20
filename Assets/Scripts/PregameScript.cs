@@ -7,6 +7,8 @@ public class PregameScript : MonoBehaviour {
 	private int current = 0;
 	private float counter = 0.0f;
 	private string[] countdown;
+	private bool initial = true;
+
 	public bool isPregame = true;
 
 	void Start()
@@ -23,11 +25,25 @@ public class PregameScript : MonoBehaviour {
 	{
 		if( isPregame )
 		{
+			if( initial )
+			{
+				SoundEffectsHelper.Instance.MakeCountdownTickSound();
+				initial = false;
+			}
+
 			counter += Time.deltaTime;
 			if( counter >= 1.0f )
 			{
 				current++;
 				counter = 0.0f;
+
+				if( current < 3 )
+				{
+					SoundEffectsHelper.Instance.MakeCountdownTickSound();
+				} else if( current == 3 ) {
+					SoundEffectsHelper.Instance.MakeCountdownGoSound();
+				}
+
 				if( current > 3 )
 				{
 					isPregame = false;

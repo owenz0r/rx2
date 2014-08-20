@@ -11,6 +11,7 @@ public class HealthScript : MonoBehaviour {
 		health -= damageCount;
 		if( health <= 0 )
 		{
+			SoundEffectsHelper.Instance.MakeExplosionSound();
 			scoreScript.incrementScore();
 			ComponentToggle( false );
 			RespawnScript rs = GetComponent< RespawnScript >();
@@ -39,9 +40,11 @@ public class HealthScript : MonoBehaviour {
 		}
 	}
 
+
 	void OnCollisionEnter2D( Collision2D coll )
 	{
 		SoundEffectsHelper.Instance.MakeShieldHitSound();
 	}
+
 
 }

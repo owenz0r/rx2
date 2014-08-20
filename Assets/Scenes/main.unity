@@ -130,6 +130,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laserFireSound: {fileID: 8300000, guid: 27c95124b0360a34f978ff67b956aee1, type: 3}
   shieldHitSound: {fileID: 8300000, guid: 8adb73a1144c60c45be71470121de5ff, type: 3}
+  explosionSound: {fileID: 8300000, guid: 863e02a82d6a74b4cb623d562dc4c5fe, type: 3}
+  countdownTickSound: {fileID: 8300000, guid: f3efe56c71bf56b41bda64e91ff404c5, type: 3}
+  countdownGoSound: {fileID: 8300000, guid: f13161adc27334045a78a24db34a0bab, type: 3}
 --- !u!1 &169145314
 GameObject:
   m_ObjectHideFlags: 0
