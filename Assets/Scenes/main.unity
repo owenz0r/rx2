@@ -295,6 +295,7 @@ MonoBehaviour:
   bottomBorder: -4
   shield: {fileID: 1600886327}
   shieldBar: {fileID: 959603444}
+  player1: 1
 --- !u!50 &316821670
 Rigidbody2D:
   m_ObjectHideFlags: 0
@@ -474,6 +475,7 @@ MonoBehaviour:
   bottomBorder: -4
   shield: {fileID: 1169925692}
   shieldBar: {fileID: 1590255494}
+  player1: 0
 --- !u!50 &387220290
 Rigidbody2D:
   m_ObjectHideFlags: 0

@@ -10,17 +10,46 @@ public class PlayerScript : MonoBehaviour {
 	public int topBorder = 4;
 	public int bottomBorder = -4;
 
+	public Transform shield;
+	public Transform shieldBar;
+
+	public bool player1;
+
 	private Vector2 movement;
 	private bool isShielded = false;
 	private float maxShield = 5.0f;
 	private float currentShield = 5.0f;
 
-	public Transform shield;
-	public Transform shieldBar;
+	private KeyCode upKey;
+	private KeyCode downKey;
+	private KeyCode shootKey;
+	private KeyCode shieldKey;
+
+
+
+	void Start()
+	{
+		if( player1 )
+		{
+			upKey = KeyCode.W;
+			downKey = KeyCode.S;
+			shootKey = KeyCode.LeftShift;
+			shieldKey = KeyCode.LeftControl;
+		} else {
+			upKey = KeyCode.UpArrow;
+			downKey = KeyCode.DownArrow;
+			shootKey = KeyCode.RightShift;
+			shieldKey = KeyCode.RightControl;
+		}
+	}
 
 	void Update()
 	{
 		float inputY = Input.GetAxis ( axis );
+		if (Input.GetKey( upKey ) )
+			inputY = 1.0f;
+		if( Input.GetKey ( downKey ) )
+			inputY = -1.0f;
 		movement = new Vector2( 0, speed.y * inputY );
 
 		if( transform.position.y > topBorder )
@@ -30,6 +59,8 @@ public class PlayerScript : MonoBehaviour {
 
 		// shooting
 		float shoot = Input.GetAxis ( fireButton );
+		if( Input.GetKey( shootKey ) )
+		   shoot = 1.0f;
 
 		if ( shoot > 0.0f )
 		{
@@ -40,6 +71,8 @@ public class PlayerScript : MonoBehaviour {
 
 		// shield
 		bool shieldBool = Input.GetButton( shieldButton );
+		if( Input.GetKey( shieldKey ) )
+		   shieldBool = true;
 
 		if( shieldBool )
 		{
