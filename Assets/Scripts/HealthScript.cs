@@ -45,6 +45,10 @@ public class HealthScript : MonoBehaviour {
 	void OnCollisionEnter2D( Collision2D coll )
 	{
 		SoundEffectsHelper.Instance.MakeShieldHitSound();
+		ContactPoint2D c = coll.contacts[0];
+		Vector3 newPos = new Vector3( c.point[0], c.point[1], -5 );
+		//newPos.z = -5.0f;
+		SpecialEffectsHelper.Instance.ShieldBounce( newPos );
 	}
 
 

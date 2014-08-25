@@ -6,6 +6,7 @@ public class SpecialEffectsHelper : MonoBehaviour {
 	public static SpecialEffectsHelper Instance;
 
 	public ParticleSystem explosionEffect;
+	public ParticleSystem shieldBounce;
 
 	void Awake()
 	{
@@ -17,6 +18,11 @@ public class SpecialEffectsHelper : MonoBehaviour {
 	public void Explosion( Vector3 position )
 	{
 		instantiate ( explosionEffect, position );
+	}
+
+	public void ShieldBounce( Vector3 position )
+	{
+		instantiate ( shieldBounce, position );
 	}
 
 	private ParticleSystem instantiate( ParticleSystem prefab, Vector3 position )
