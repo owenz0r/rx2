@@ -84,6 +84,7 @@ GameObject:
   - 4: {fileID: 31483958}
   - 114: {fileID: 31483957}
   - 114: {fileID: 31483959}
+  - 114: {fileID: 31483960}
   m_Layer: 0
   m_Name: scripts
   m_TagString: Untagged
@@ -133,6 +134,19 @@ MonoBehaviour:
   explosionSound: {fileID: 8300000, guid: 863e02a82d6a74b4cb623d562dc4c5fe, type: 3}
   countdownTickSound: {fileID: 8300000, guid: f3efe56c71bf56b41bda64e91ff404c5, type: 3}
   countdownGoSound: {fileID: 8300000, guid: f13161adc27334045a78a24db34a0bab, type: 3}
+--- !u!114 &31483960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 31483956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d416ecf5275b74ba1bc3ab9b5d27b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionEffect: {fileID: 19800000, guid: 2caa44a97d940284fba23f29395fd494, type: 2}
+  shieldBounce: {fileID: 19800002, guid: b4652b5673290a148a5803345562df70, type: 2}
 --- !u!1 &169145314
 GameObject:
   m_ObjectHideFlags: 0
