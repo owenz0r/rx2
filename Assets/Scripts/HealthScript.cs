@@ -12,6 +12,7 @@ public class HealthScript : MonoBehaviour {
 		if( health <= 0 )
 		{
 			SoundEffectsHelper.Instance.MakeExplosionSound();
+			SpecialEffectsHelper.Instance.Explosion( transform.position );
 			scoreScript.incrementScore();
 			ComponentToggle( false );
 			RespawnScript rs = GetComponent< RespawnScript >();
