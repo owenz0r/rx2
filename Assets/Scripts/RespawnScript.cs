@@ -4,8 +4,8 @@ using System.Collections;
 public class RespawnScript : MonoBehaviour {
 	
 	public float respawnDelay = 1.0f;
-
-	private bool respawning = false;
+	public PregameScript pregameScript;
+	public  bool respawning = false;
 	private float delay;
 	private Vector3 startPosition;
 
@@ -31,6 +31,7 @@ public class RespawnScript : MonoBehaviour {
 
 	void Respawn()
 	{
+		pregameScript.startPregame();
 		transform.position = startPosition;
 		GetComponent< PlayerScript >().ResetShield ();
 		GetComponent< HealthScript >().ComponentToggle( true );

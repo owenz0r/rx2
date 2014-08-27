@@ -9,7 +9,7 @@ public class PregameScript : MonoBehaviour {
 	private string[] countdown;
 	private bool initial = true;
 
-	public bool isPregame = true;
+	public bool isPregame = false;
 
 	void Start()
 	{
@@ -62,6 +62,15 @@ public class PregameScript : MonoBehaviour {
 			GUIStyle labelStyle = skin.GetStyle( "Label" );
 			labelStyle.alignment = TextAnchor.MiddleCenter;
 			GUI.Label ( new Rect( (Screen.width/2.0f) - 100, (Screen.height/2.0f) - 50, 200, 100 ), countdown[ current ], labelStyle );
+		}
+	}
+
+	public void startPregame()
+	{
+		if( !isPregame )
+		{
+			initial = true;
+			isPregame = true;
 		}
 	}
 }
