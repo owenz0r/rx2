@@ -85,6 +85,7 @@ GameObject:
   - 114: {fileID: 31483957}
   - 114: {fileID: 31483959}
   - 114: {fileID: 31483960}
+  - 114: {fileID: 31483961}
   m_Layer: 0
   m_Name: scripts
   m_TagString: Untagged
@@ -147,6 +148,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionEffect: {fileID: 19800000, guid: 2caa44a97d940284fba23f29395fd494, type: 2}
   shieldBounce: {fileID: 19800002, guid: b4652b5673290a148a5803345562df70, type: 2}
+--- !u!114 &31483961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 31483956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa2830ef50c56242b0d60382dc6ebfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trishotPrefab: {fileID: 400000, guid: 332eb8c3c9393394f8d307f532ddd91c, type: 2}
+  powerupInterval: 5
 --- !u!1 &169145314
 GameObject:
   m_ObjectHideFlags: 0

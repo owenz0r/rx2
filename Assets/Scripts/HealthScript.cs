@@ -39,6 +39,11 @@ public class HealthScript : MonoBehaviour {
 
 			Destroy ( shot.gameObject );
 		}
+		PowerupScript pup = otherCollider.gameObject.GetComponent< PowerupScript >();
+		if( pup != null )
+		{
+			Destroy ( pup.gameObject );
+		}
 	}
 
 
