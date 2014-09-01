@@ -7,8 +7,10 @@ public class WeaponScript : MonoBehaviour {
 	public PregameScript pregameScript;
 	public RespawnScript respawnScript;
 	public float shootingRate = 0.25f;
+	public float trishotAngle = 10.0f;
 
 	private float shootCooldown;
+	private bool trishot = false;
 
 	void Start()
 	{
@@ -25,14 +27,55 @@ public class WeaponScript : MonoBehaviour {
 	{
 		if( CanAttack )
 		{
+
+			if( trishot )
+			{
+				var firstShot = Instantiate ( shotPrefab ) as Transform;
+				var secondShot = Instantiate ( shotPrefab ) as Transform;
+				var thirdShot = Instantiate ( shotPrefab ) as Transform;
+
+				firstShot.position = transform.position;
+				secondShot.position = new Vector3( transform.position.x, transform.position.y + 0.1f, transform.position.z );
+				thirdShot.position = new Vector3( transform.position.x, transform.position.y - 0.1f, transform.position.z );
+
+				MoveScript move = firstShot.gameObject.GetComponent< MoveScript >();
+				if( move != null )
+					move.direction = this.transform.right;
+
+				if( this.transform.right.x > 0 )
+				{
+					float rad = trishotAngle * Mathf.PI / 180.0f;
+					float x = Mathf.Cos ( rad );
+					float y = Mathf.Sin ( rad );
+
+					move = secondShot.gameObject.GetComponent< MoveScript >();
+					move.direction = new Vector2( x, y );
+					move = thirdShot.gameObject.GetComponent< MoveScript >();
+					move.direction = new Vector2( x, -y );
+				}
+				else
+				{
+					float rad = trishotAngle * Mathf.PI / 180.0f;
+					float x = Mathf.Cos ( rad );
+					float y = Mathf.Sin ( rad );
+					
+					move = secondShot.gameObject.GetComponent< MoveScript >();
+					move.direction = new Vector2( -x, y );
+					move = thirdShot.gameObject.GetComponent< MoveScript >();
+					move.direction = new Vector2( -x, -y );
+				}
+
+			}
+			else
+			{
+				var shotTransform = Instantiate ( shotPrefab ) as Transform;
+				shotTransform.position = transform.position;
+
+				MoveScript move = shotTransform.gameObject.GetComponent< MoveScript >();
+				if( move != null )
+					move.direction = this.transform.right;
+			}
 			shootCooldown = shootingRate;
-			var shotTransform = Instantiate ( shotPrefab ) as Transform;
-			shotTransform.position = transform.position;
-
-			MoveScript move = shotTransform.gameObject.GetComponent< MoveScript >();
-			if( move != null )
-				move.direction = this.transform.right;
-
 			SoundEffectsHelper.Instance.MakeLaserFireSound();
 		}
 	}
@@ -47,5 +90,10 @@ public class WeaponScript : MonoBehaviour {
 			        !pregameScript.isPregame &&
 			        !respawnScript.respawning);
 		}
+	}
+
+	public void setWeaponTrishot( bool onoff )
+	{
+		trishot = onoff;
 	}
 }

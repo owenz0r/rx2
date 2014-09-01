@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trishotPrefab: {fileID: 400000, guid: 332eb8c3c9393394f8d307f532ddd91c, type: 2}
-  powerupInterval: 5
+  powerupInterval: 10
 --- !u!1 &169145314
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,6 +716,7 @@ MonoBehaviour:
   pregameScript: {fileID: 31483957}
   respawnScript: {fileID: 316821674}
   shootingRate: .25
+  trishotAngle: 10
 --- !u!1 &959603442
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,6 +999,7 @@ MonoBehaviour:
   pregameScript: {fileID: 31483957}
   respawnScript: {fileID: 387220292}
   shootingRate: .25
+  trishotAngle: 10
 --- !u!1 &1555239616
 GameObject:
   m_ObjectHideFlags: 0

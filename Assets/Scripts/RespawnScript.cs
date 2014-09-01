@@ -35,6 +35,7 @@ public class RespawnScript : MonoBehaviour {
 		transform.position = startPosition;
 		GetComponent< PlayerScript >().ResetShield ();
 		GetComponent< HealthScript >().ComponentToggle( true );
+		GetComponentInChildren< WeaponScript >().setWeaponTrishot( false );
 	}
 
 	public void beginRespawn()
