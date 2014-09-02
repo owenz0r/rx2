@@ -4,6 +4,7 @@ using System.Collections;
 public class PowerupsHelper : MonoBehaviour {
 
 	public Transform trishotPrefab;
+	public Transform rechargePrefab;
 	public float powerupInterval;
 
 	private float counter;	
@@ -17,8 +18,15 @@ public class PowerupsHelper : MonoBehaviour {
 		counter += Time.deltaTime;
 		if( counter > powerupInterval )
 		{
-			Transform pup1 = Instantiate( trishotPrefab ) as Transform;
-			Transform pup2 = Instantiate( trishotPrefab ) as Transform;
+			Transform prefab;
+			switch( Random.Range( 0, 2 ) )
+			{
+				case 0: prefab = trishotPrefab; break;
+				case 1: prefab = rechargePrefab; break;
+				default : prefab = trishotPrefab; break;
+			}
+			Transform pup1 = Instantiate( prefab ) as Transform;
+			Transform pup2 = Instantiate( prefab ) as Transform;
 
 			MoveScript ms1 = pup1.GetComponent< MoveScript >();
 			MoveScript ms2 = pup2.GetComponent< MoveScript >();

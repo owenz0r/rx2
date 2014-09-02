@@ -6,6 +6,7 @@ public class RespawnScript : MonoBehaviour {
 	public float respawnDelay = 1.0f;
 	public PregameScript pregameScript;
 	public  bool respawning = false;
+
 	private float delay;
 	private Vector3 startPosition;
 
