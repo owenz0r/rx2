@@ -160,7 +160,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trishotPrefab: {fileID: 400000, guid: 332eb8c3c9393394f8d307f532ddd91c, type: 2}
-  powerupInterval: 10
+  rechargePrefab: {fileID: 400002, guid: 6bebef731ed48664ea74c404055569d6, type: 2}
+  powerupInterval: 3
 --- !u!1 &169145314
 GameObject:
   m_ObjectHideFlags: 0
