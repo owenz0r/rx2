@@ -7,6 +7,7 @@ public class PlayerScript : MonoBehaviour {
 	public string axis = "R_Vertical";
 	public string fireButton = "Fire1";
 	public string shieldButton = "R_Shoulder";
+	public string wellButton = "joystick button 2";
 	public int topBorder = 4;
 	public int bottomBorder = -4;
 
@@ -24,7 +25,7 @@ public class PlayerScript : MonoBehaviour {
 	private KeyCode downKey;
 	private KeyCode shootKey;
 	private KeyCode shieldKey;
-
+	private KeyCode wellKey;
 
 
 	void Start()
@@ -67,6 +68,14 @@ public class PlayerScript : MonoBehaviour {
 			WeaponScript weapon = GetComponentInChildren< WeaponScript >();
 			if( weapon != null )
 				weapon.Attack();
+		}
+
+		// well shot
+		if( Input.GetKeyDown ( wellButton ) )
+		{
+			WeaponScript weapon = GetComponentInChildren< WeaponScript >();
+			if( weapon != null )
+				weapon.ShootWell();
 		}
 
 		// shield

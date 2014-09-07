@@ -9,6 +9,10 @@ public class WeaponScript : MonoBehaviour {
 	public float shootingRate = 0.25f;
 	public float trishotAngle = 10.0f;
 
+	public Transform wellPrefab;
+	public WellManager wellManager;
+	public string weaponColour;
+
 	private float shootCooldown;
 	private bool trishot = false;
 
@@ -21,6 +25,21 @@ public class WeaponScript : MonoBehaviour {
 	{
 		if( shootCooldown > 0 )
 			shootCooldown -= Time.deltaTime;
+	}
+
+	public void ShootWell()
+	{
+		if( CanShootWell )
+		{
+			var wellTransform = Instantiate ( wellPrefab ) as Transform;
+			wellTransform.position = transform.position;
+			
+			PushScript push = wellTransform.GetComponent< PushScript >();
+			if( weaponColour == "red" )
+				push.force.x *= -1.0f;
+
+			wellManager.addWell ( wellTransform, weaponColour );
+		}
 	}
 
 	public void Attack()
@@ -89,6 +108,14 @@ public class WeaponScript : MonoBehaviour {
 			        !GetComponentInParent< PlayerScript >().hasShieldUp &&
 			        !pregameScript.isPregame &&
 			        !respawnScript.respawning);
+		}
+	}
+
+	public bool CanShootWell
+	{
+		get
+		{
+			return true;
 		}
 	}
 

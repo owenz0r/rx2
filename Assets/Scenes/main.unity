@@ -86,6 +86,7 @@ GameObject:
   - 114: {fileID: 31483959}
   - 114: {fileID: 31483960}
   - 114: {fileID: 31483961}
+  - 114: {fileID: 31483962}
   m_Layer: 0
   m_Name: scripts
   m_TagString: Untagged
@@ -161,7 +162,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trishotPrefab: {fileID: 400000, guid: 332eb8c3c9393394f8d307f532ddd91c, type: 2}
   rechargePrefab: {fileID: 400002, guid: 6bebef731ed48664ea74c404055569d6, type: 2}
-  powerupInterval: 3
+  powerupInterval: 60
+--- !u!114 &31483962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 31483956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd617688422a16745ae7153e2f54e608, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &169145314
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,6 +332,7 @@ MonoBehaviour:
   axis: Vertical
   fireButton: L_Trigger
   shieldButton: L_Shoulder
+  wellButton: joystick button 2
   topBorder: 4
   bottomBorder: -4
   shield: {fileID: 1600886327}
@@ -502,6 +515,7 @@ MonoBehaviour:
   axis: R_Vertical
   fireButton: R_Trigger
   shieldButton: R_Shoulder
+  wellButton: joystick button 1
   topBorder: 4
   bottomBorder: -4
   shield: {fileID: 1169925692}
@@ -718,6 +732,9 @@ MonoBehaviour:
   respawnScript: {fileID: 316821674}
   shootingRate: .25
   trishotAngle: 10
+  wellPrefab: {fileID: 400002, guid: 0104cae83c91368418259ba56cf3bca1, type: 2}
+  wellManager: {fileID: 31483962}
+  weaponColour: red
 --- !u!1 &959603442
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,6 +1018,9 @@ MonoBehaviour:
   respawnScript: {fileID: 387220292}
   shootingRate: .25
   trishotAngle: 10
+  wellPrefab: {fileID: 400002, guid: 0104cae83c91368418259ba56cf3bca1, type: 2}
+  wellManager: {fileID: 31483962}
+  weaponColour: blue
 --- !u!1 &1555239616
 GameObject:
   m_ObjectHideFlags: 0
