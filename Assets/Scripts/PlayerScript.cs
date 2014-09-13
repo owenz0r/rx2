@@ -53,6 +53,7 @@ public class PlayerScript : MonoBehaviour {
 			inputY = -1.0f;
 		movement = new Vector2( 0, speed.y * inputY );
 
+		// translation
 		if( transform.position.y > topBorder )
 			transform.position = new Vector3( transform.position.x, topBorder, transform.position.z );
 		if( transform.position.y < bottomBorder )
