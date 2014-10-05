@@ -4,10 +4,7 @@ using System.Collections;
 public class PlayerScript : MonoBehaviour {
 
 	public Vector2 speed = new Vector2( 10, 10 );
-	public string axis = "R_Vertical";
-	public string fireButton = "Fire1";
-	public string shieldButton = "R_Shoulder";
-	public string wellButton = "joystick button 2";
+
 	public int topBorder = 4;
 	public int bottomBorder = -4;
 
@@ -27,16 +24,30 @@ public class PlayerScript : MonoBehaviour {
 	private KeyCode shieldKey;
 	private KeyCode wellKey;
 
+	private string axis;
+	private string fireButton;
+	private string shieldButton;
+	private string wellButton;
+	private string wellTrigger;
 
 	void Start()
 	{
 		if( player1 )
 		{
+			axis = "P1_Vertical";
+			fireButton = "P1_R_Trigger";
+			shieldButton = "P1_R_Shoulder";
+			wellTrigger = "P1_L_Trigger";
+			wellButton = "joystick button 2";
 			upKey = KeyCode.W;
 			downKey = KeyCode.S;
 			shootKey = KeyCode.LeftShift;
 			shieldKey = KeyCode.LeftControl;
 		} else {
+			axis = "Vertical";
+			fireButton = "L_Trigger";
+			shieldButton = "L_Shoulder";
+			wellButton = "joystick button 2";
 			upKey = KeyCode.UpArrow;
 			downKey = KeyCode.DownArrow;
 			shootKey = KeyCode.RightShift;
@@ -46,68 +57,70 @@ public class PlayerScript : MonoBehaviour {
 
 	void Update()
 	{
-		float inputY = Input.GetAxis ( axis );
-		if (Input.GetKey( upKey ) )
-			inputY = 1.0f;
-		if( Input.GetKey ( downKey ) )
-			inputY = -1.0f;
-		movement = new Vector2( 0, speed.y * inputY );
-
-		// translation
-		if( transform.position.y > topBorder )
-			transform.position = new Vector3( transform.position.x, topBorder, transform.position.z );
-		if( transform.position.y < bottomBorder )
-			transform.position = new Vector3( transform.position.x, bottomBorder, transform.position.z );
-
-		// shooting
-		float shoot = Input.GetAxis ( fireButton );
-		if( Input.GetKey( shootKey ) )
-		   shoot = 1.0f;
-
-		if ( shoot > 0.0f )
+		if( networkView.isMine )
 		{
-			WeaponScript weapon = GetComponentInChildren< WeaponScript >();
-			if( weapon != null )
-				weapon.Attack();
+			float inputY = Input.GetAxis ( axis );
+			if (Input.GetKey( upKey ) )
+				inputY = 1.0f;
+			if( Input.GetKey ( downKey ) )
+				inputY = -1.0f;
+			movement = new Vector2( 0, speed.y * inputY );
+
+			// translation
+			if( transform.position.y > topBorder )
+				transform.position = new Vector3( transform.position.x, topBorder, transform.position.z );
+			if( transform.position.y < bottomBorder )
+				transform.position = new Vector3( transform.position.x, bottomBorder, transform.position.z );
+
+			// shooting
+			float shoot = Input.GetAxis ( fireButton );
+			if( Input.GetKey( shootKey ) )
+			   shoot = 1.0f;
+
+			if ( shoot > 0.0f )
+			{
+				WeaponScript weapon = GetComponentInChildren< WeaponScript >();
+				if( weapon != null )
+					weapon.Attack();
+			}
+
+			// well shot
+			if( Input.GetKey( wellButton ) )
+			{
+				WeaponScript weapon = GetComponentInChildren< WeaponScript >();
+				if( weapon != null )
+					weapon.ShootWell( Input.GetAxis( wellTrigger ) );
+			}
+
+			// shield
+			bool shieldBool = Input.GetButton( shieldButton );
+			if( Input.GetKey( shieldKey ) )
+			   shieldBool = true;
+
+			if( shieldBool )
+			{
+				currentShield = currentShield - Time.deltaTime;
+			}
+
+			if( shield && currentShield > 0.0f )
+			{
+				SpriteRenderer sr = shield.GetComponent< SpriteRenderer >();
+				sr.enabled = shieldBool;
+				CircleCollider2D cc = shield.GetComponent< CircleCollider2D >();
+				cc.enabled = shieldBool;
+				isShielded = shieldBool;
+
+				ShieldBarScript sbs = shieldBar.GetComponent< ShieldBarScript >();
+				sbs.barDisplay = (currentShield / maxShield) * 100.0f;
+
+			} else {
+				SpriteRenderer sr = shield.GetComponent< SpriteRenderer >();
+				sr.enabled = false;
+				CircleCollider2D cc = shield.GetComponent< CircleCollider2D >();
+				cc.enabled = false;
+				isShielded = false;
+			}
 		}
-
-		// well shot
-		if( Input.GetKeyDown ( wellButton ) )
-		{
-			WeaponScript weapon = GetComponentInChildren< WeaponScript >();
-			if( weapon != null )
-				weapon.ShootWell();
-		}
-
-		// shield
-		bool shieldBool = Input.GetButton( shieldButton );
-		if( Input.GetKey( shieldKey ) )
-		   shieldBool = true;
-
-		if( shieldBool )
-		{
-			currentShield = currentShield - Time.deltaTime;
-		}
-
-		if( shield && currentShield > 0.0f )
-		{
-			SpriteRenderer sr = shield.GetComponent< SpriteRenderer >();
-			sr.enabled = shieldBool;
-			CircleCollider2D cc = shield.GetComponent< CircleCollider2D >();
-			cc.enabled = shieldBool;
-			isShielded = shieldBool;
-
-			ShieldBarScript sbs = shieldBar.GetComponent< ShieldBarScript >();
-			sbs.barDisplay = (currentShield / maxShield) * 100.0f;
-
-		} else {
-			SpriteRenderer sr = shield.GetComponent< SpriteRenderer >();
-			sr.enabled = false;
-			CircleCollider2D cc = shield.GetComponent< CircleCollider2D >();
-			cc.enabled = false;
-			isShielded = false;
-		}
-
 	}
 
 	void FixedUpdate()
