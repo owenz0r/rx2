@@ -3,6 +3,11 @@ using System.Collections;
 
 public class NetworkManager : MonoBehaviour {
 
+	public GameObject bluePrefab;
+	public Transform blueSpawnObject;
+	public GameObject redPrefab;
+	public Transform redSpawnObject;
+
 	private float startServerButtonX;
 	private float startServerButtonY;
 	private float startServerButtonW;
@@ -46,12 +51,53 @@ public class NetworkManager : MonoBehaviour {
 		if( msEvent == MasterServerEvent.RegistrationSucceeded )
 			print( "Server registered!" );
 	}
-	
+
+	void OnPlayerConnected()
+	{
+		networkView.RPC( "startGame", RPCMode.AllBuffered );
+	}
+
+	[RPC]
+	void startGame()
+	{
+		GameObject red = GameObject.FindGameObjectWithTag( "red" );
+		GameObject blue = GameObject.FindGameObjectWithTag( "blue" );
+		WeaponScript wp = red.GetComponentInChildren< WeaponScript >();
+		wp.respawnScript = blue.GetComponent< RespawnScript >();
+		blue.GetComponentInChildren< WeaponScript >().respawnScript = red.GetComponent< RespawnScript >();
+		GetComponent< PregameScript >().startCountdown();
+	}
+
 	void OnServerInitialized()
 	{
 		print( "Server Initialized!" );
+		GameObject bluePlayer = (GameObject)Network.Instantiate( bluePrefab, blueSpawnObject.position, Quaternion.identity, 0 );
+		GameObject scripts = GameObject.Find ( "scripts"  );
+		GameObject blueScripts = GameObject.Find ( "scripts/blueScripts"  );
+		GameObject redScripts = GameObject.Find ( "scripts/redScripts"  );
+		bluePlayer.GetComponent< PlayerScript >().shieldBar = blueScripts.transform;
+		bluePlayer.GetComponent< HealthScript >().scoreScript = redScripts.GetComponent< ScoreScript >();
+		bluePlayer.GetComponent< RespawnScript >().pregameScript = scripts.GetComponent< PregameScript >();
+		WeaponScript wp = bluePlayer.GetComponentInChildren< WeaponScript >();
+		wp.pregameScript = scripts.GetComponent< PregameScript >();
+		wp.wellManager = scripts.GetComponent< WellManager >();
 	}
-	
+
+	void OnConnectedToServer()
+	{
+		print( "Connected!" );
+		GameObject redPlayer = (GameObject)Network.Instantiate( redPrefab, redSpawnObject.position, Quaternion.identity, 0 );
+		GameObject scripts = GameObject.Find ( "scripts"  );
+		GameObject blueScripts = GameObject.Find ( "scripts/blueScripts"  );
+		GameObject redScripts = GameObject.Find ( "scripts/redScripts"  );
+		redPlayer.GetComponent< PlayerScript >().shieldBar = redScripts.transform;
+		redPlayer.GetComponent< HealthScript >().scoreScript = blueScripts.GetComponent< ScoreScript >();
+		redPlayer.GetComponent< RespawnScript >().pregameScript = scripts.GetComponent< PregameScript >();
+		WeaponScript wp = redPlayer.GetComponentInChildren< WeaponScript >();
+		wp.pregameScript = scripts.GetComponent< PregameScript >();
+		wp.wellManager = scripts.GetComponent< WellManager >();
+	}
+
 	void startServer()
 	{
 		Network.InitializeServer( 2, 25001, !Network.HavePublicAddress() );

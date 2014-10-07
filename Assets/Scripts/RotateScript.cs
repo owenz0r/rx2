@@ -11,7 +11,13 @@ public class RotateScript : MonoBehaviour {
 		if( networkView.isMine )
 		{
 			var rightStick = new Vector2( Input.GetAxis( "P1_R_Horizontal" ), Input.GetAxis( "P1_R_Vertical" ) );
-			var direction = new Vector3( rightStick.y * -1.0f, rightStick.x, 0 );
+			Vector3 direction;
+			if( transform.parent.tag == "blue" )
+			{
+				direction = new Vector3( rightStick.y * -1.0f, rightStick.x, 0 );
+			} else {
+				direction = new Vector3( rightStick.y, rightStick.x * -1.0f, 0 );
+			}
 			//print ( direction );
 			if( direction.magnitude > radialDeadZone )
 			{

@@ -32,27 +32,15 @@ public class PlayerScript : MonoBehaviour {
 
 	void Start()
 	{
-		if( player1 )
-		{
-			axis = "P1_Vertical";
-			fireButton = "P1_R_Trigger";
-			shieldButton = "P1_R_Shoulder";
-			wellTrigger = "P1_L_Trigger";
-			wellButton = "joystick button 2";
-			upKey = KeyCode.W;
-			downKey = KeyCode.S;
-			shootKey = KeyCode.LeftShift;
-			shieldKey = KeyCode.LeftControl;
-		} else {
-			axis = "Vertical";
-			fireButton = "L_Trigger";
-			shieldButton = "L_Shoulder";
-			wellButton = "joystick button 2";
-			upKey = KeyCode.UpArrow;
-			downKey = KeyCode.DownArrow;
-			shootKey = KeyCode.RightShift;
-			shieldKey = KeyCode.RightControl;
-		}
+		axis = "P1_Vertical";
+		fireButton = "P1_R_Trigger";
+		shieldButton = "P1_R_Shoulder";
+		wellTrigger = "P1_L_Trigger";
+		wellButton = "joystick button 2";
+		upKey = KeyCode.W;
+		downKey = KeyCode.S;
+		shootKey = KeyCode.LeftShift;
+		shieldKey = KeyCode.LeftControl;
 	}
 
 	void Update()

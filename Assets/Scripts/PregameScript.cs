@@ -82,4 +82,9 @@ public class PregameScript : MonoBehaviour {
 			isPregame = true;
 		}
 	}
+
+	public void startCountdown()
+	{
+		beginCountdown = true;
+	}
 }
