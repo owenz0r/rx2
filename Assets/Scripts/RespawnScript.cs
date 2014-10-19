@@ -5,6 +5,7 @@ public class RespawnScript : MonoBehaviour {
 	
 	public float respawnDelay = 1.0f;
 	public PregameScript pregameScript;
+	public GamestateManager gamestateManager;
 	public  bool respawning = false;
 
 	private float delay;

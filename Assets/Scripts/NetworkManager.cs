@@ -13,6 +13,9 @@ public class NetworkManager : MonoBehaviour {
 	private float startServerButtonW;
 	private float startServerButtonH;
 
+	private GameObject redPlayer;
+	private GameObject bluePlayer;
+
 	private string gameName = "OMcN_RX2";
 	private bool refreshing = false;
 	private HostData[] hostData;
@@ -52,50 +55,85 @@ public class NetworkManager : MonoBehaviour {
 			print( "Server registered!" );
 	}
 
-	void OnPlayerConnected()
+	void OnPlayerConnected( NetworkPlayer player )
 	{
-		networkView.RPC( "startGame", RPCMode.AllBuffered );
+		networkView.RPC ( "doPlayerSetup", player );
 	}
 
 	[RPC]
 	void startGame()
 	{
-		GameObject red = GameObject.FindGameObjectWithTag( "red" );
-		GameObject blue = GameObject.FindGameObjectWithTag( "blue" );
-		WeaponScript wp = red.GetComponentInChildren< WeaponScript >();
-		wp.respawnScript = blue.GetComponent< RespawnScript >();
-		blue.GetComponentInChildren< WeaponScript >().respawnScript = red.GetComponent< RespawnScript >();
+
+		GameObject red = GameObject.FindWithTag( "red" );
+		GameObject blue = GameObject.FindWithTag ( "blue" );
+		if( red ){
+			WeaponScript wp = blue.GetComponentInChildren< WeaponScript >();
+			RespawnScript rs = red.GetComponent< RespawnScript >();
+			wp.respawnScript = rs;
+			print( "CONNECTED RESPAWN SCRIPT!" );
+		} else {
+			print ("DIDNT FIND RED :(" );
+		}
+
+
+		red.GetComponent< HealthScript >().scoreScript = GameObject.Find( "scripts/blueScripts" ).GetComponent< ScoreScript >();
+		red.GetComponent< RespawnScript >().pregameScript = GameObject.Find( "scripts" ).GetComponent< PregameScript >();
 		GetComponent< PregameScript >().startCountdown();
 	}
 
 	void OnServerInitialized()
 	{
 		print( "Server Initialized!" );
-		GameObject bluePlayer = (GameObject)Network.Instantiate( bluePrefab, blueSpawnObject.position, Quaternion.identity, 0 );
+		bluePlayer = Network.Instantiate( bluePrefab, blueSpawnObject.position, Quaternion.identity, 0 ) as GameObject;
 		GameObject scripts = GameObject.Find ( "scripts"  );
 		GameObject blueScripts = GameObject.Find ( "scripts/blueScripts"  );
 		GameObject redScripts = GameObject.Find ( "scripts/redScripts"  );
 		bluePlayer.GetComponent< PlayerScript >().shieldBar = blueScripts.transform;
 		bluePlayer.GetComponent< HealthScript >().scoreScript = redScripts.GetComponent< ScoreScript >();
+		bluePlayer.GetComponent< HealthScript >().gamestateManager = scripts.GetComponent< GamestateManager >();
 		bluePlayer.GetComponent< RespawnScript >().pregameScript = scripts.GetComponent< PregameScript >();
+		bluePlayer.GetComponent< RespawnScript >().gamestateManager = scripts.GetComponent< GamestateManager >();
 		WeaponScript wp = bluePlayer.GetComponentInChildren< WeaponScript >();
 		wp.pregameScript = scripts.GetComponent< PregameScript >();
 		wp.wellManager = scripts.GetComponent< WellManager >();
+		//wp.gamestateManager = scripts.GetComponent< GamestateManager >();
 	}
 
 	void OnConnectedToServer()
 	{
+
+	}
+
+	[RPC]
+	void doPlayerSetup()
+	{
 		print( "Connected!" );
-		GameObject redPlayer = (GameObject)Network.Instantiate( redPrefab, redSpawnObject.position, Quaternion.identity, 0 );
+		redPlayer = Network.Instantiate( redPrefab, redSpawnObject.position, Quaternion.identity, 0 ) as GameObject;
+
 		GameObject scripts = GameObject.Find ( "scripts"  );
 		GameObject blueScripts = GameObject.Find ( "scripts/blueScripts"  );
 		GameObject redScripts = GameObject.Find ( "scripts/redScripts"  );
 		redPlayer.GetComponent< PlayerScript >().shieldBar = redScripts.transform;
 		redPlayer.GetComponent< HealthScript >().scoreScript = blueScripts.GetComponent< ScoreScript >();
+		redPlayer.GetComponent< HealthScript >().gamestateManager = scripts.GetComponent< GamestateManager >();
 		redPlayer.GetComponent< RespawnScript >().pregameScript = scripts.GetComponent< PregameScript >();
+		redPlayer.GetComponent< RespawnScript >().gamestateManager = scripts.GetComponent< GamestateManager >();
 		WeaponScript wp = redPlayer.GetComponentInChildren< WeaponScript >();
 		wp.pregameScript = scripts.GetComponent< PregameScript >();
 		wp.wellManager = scripts.GetComponent< WellManager >();
+		//wp.gamestateManager = scripts.GetComponent< GamestateManager >();
+
+		GameObject blue = GameObject.FindWithTag ( "blue" );
+		if( blue == null )
+			print( "Couldn't find blue" );
+		RespawnScript rs = blue.GetComponent< RespawnScript >();
+		if( rs == null )
+			print( "Couldn't find respawnscript" );
+		wp.respawnScript = rs;
+
+		blue.GetComponent< HealthScript >().scoreScript = redScripts.GetComponent< ScoreScript >();
+		blue.GetComponent< RespawnScript >().pregameScript = scripts.GetComponent< PregameScript >();
+		networkView.RPC( "startGame", RPCMode.AllBuffered );
 	}
 
 	void startServer()

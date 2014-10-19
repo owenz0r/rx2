@@ -95,8 +95,9 @@ public class WeaponScript : MonoBehaviour {
 			}
 			else
 			{
-				var shotTransform = Instantiate ( shotPrefab ) as Transform;
-				shotTransform.position = transform.position;
+				var shotTransform = Network.Instantiate( shotPrefab, transform.position, Quaternion.identity, 0 ) as Transform;
+				//var shotTransform = Instantiate ( shotPrefab ) as Transform;
+				//shotTransform.position = transform.position;
 
 				MoveScript move = shotTransform.gameObject.GetComponent< MoveScript >();
 				if( move != null )
@@ -111,6 +112,10 @@ public class WeaponScript : MonoBehaviour {
 	{
 		get
 		{
+			print( GetComponentInParent< PlayerScript >().hasShieldUp );
+			print( pregameScript.isPregame );
+			print( respawnScript.respawning );
+
 			// can fire only if no cooldown and shields are not up
 			return ( shootCooldown <= 0.0f && 
 			        !GetComponentInParent< PlayerScript >().hasShieldUp &&

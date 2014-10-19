@@ -10,8 +10,11 @@ public class MoveScript : MonoBehaviour {
 
 	void Start()
 	{
-		movement = new Vector2( speed.x * direction.x, speed.y * direction.y );
-		rigidbody2D.velocity = movement;
+		if( networkView.isMine )
+		{
+			movement = new Vector2( speed.x * direction.x, speed.y * direction.y );
+			rigidbody2D.velocity = movement;
+		}
 	}
 	
 }

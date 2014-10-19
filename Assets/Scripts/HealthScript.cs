@@ -6,8 +6,14 @@ public class HealthScript : MonoBehaviour {
 
 	public int health = 1;
 	public ScoreScript scoreScript;
+	public GamestateManager gamestateManager;
 
 	private List<bool> toggleEnable;
+
+	void OnNetworkInstantiate( NetworkMessageInfo info )
+	{
+		print( "New object instanited by " + info.sender );
+	}
 
 	void Start()
 	{
@@ -19,13 +25,19 @@ public class HealthScript : MonoBehaviour {
 		health -= damageCount;
 		if( health <= 0 )
 		{
-			SoundEffectsHelper.Instance.MakeExplosionSound();
-			SpecialEffectsHelper.Instance.Explosion( transform.position );
-			scoreScript.incrementScore();
-			ComponentToggle( false );
-			RespawnScript rs = GetComponent< RespawnScript >();
-			rs.beginRespawn();
+			networkView.RPC ( "kill", RPCMode.AllBuffered );
 		}
+	}
+
+	[RPC]
+	void kill()
+	{
+		SoundEffectsHelper.Instance.MakeExplosionSound();
+		SpecialEffectsHelper.Instance.Explosion( transform.position );
+		scoreScript.incrementScore();
+		ComponentToggle( false );
+		RespawnScript rs = GetComponent< RespawnScript >();
+		rs.beginRespawn();
 	}
 
 	public void ComponentToggle( bool onoff )
@@ -51,22 +63,37 @@ public class HealthScript : MonoBehaviour {
 
 	void OnTriggerEnter2D( Collider2D otherCollider )
 	{
-		ShotScript shot = otherCollider.gameObject.GetComponent< ShotScript >();
-		if( shot != null )
+		if( networkView.isMine )
 		{
-			PlayerScript ps = GetComponent< PlayerScript >();
-
-			if( ! ps.hasShieldUp )
-				Damage ( shot.damage );
-
-			Destroy ( shot.gameObject );
+			ShotScript shot = otherCollider.gameObject.GetComponent< ShotScript >();
+			if( shot != null )
+			{
+				PlayerScript ps = GetComponent< PlayerScript >();
+	
+				if( ! ps.hasShieldUp )
+					Damage ( shot.damage );
+	
+				if( shot.networkView.isMine )
+				{
+					Network.Destroy( shot.gameObject );
+				} else {
+					networkView.RPC( "destroyBullet", RPCMode.OthersBuffered, shot.gameObject.networkView.viewID );
+				}
+			}
+			PowerupScript pup = otherCollider.gameObject.GetComponent< PowerupScript >();
+			if( pup != null )
+			{
+				pup.triggerPowerup( this.transform );
+				Destroy ( pup.gameObject );
+			}
 		}
-		PowerupScript pup = otherCollider.gameObject.GetComponent< PowerupScript >();
-		if( pup != null )
-		{
-			pup.triggerPowerup( this.transform );
-			Destroy ( pup.gameObject );
-		}
+	}
+
+	[RPC]
+	void destroyBullet( NetworkViewID viewId )
+	{
+		NetworkView bulletView = NetworkView.Find( viewId );
+		Network.Destroy( bulletView.gameObject );
 	}
 
 
