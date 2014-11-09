@@ -36,7 +36,7 @@ public class PlayerScript : MonoBehaviour {
 		fireButton = "P1_R_Trigger";
 		shieldButton = "P1_R_Shoulder";
 		wellTrigger = "P1_L_Trigger";
-		wellButton = "joystick button 2";
+		wellButton = "P1_X";
 		upKey = KeyCode.W;
 		downKey = KeyCode.S;
 		shootKey = KeyCode.LeftShift;
@@ -73,7 +73,7 @@ public class PlayerScript : MonoBehaviour {
 			}
 
 			// well shot
-			if( Input.GetKey( wellButton ) )
+			if( Input.GetButtonDown( wellButton ) )
 			{
 				WeaponScript weapon = GetComponentInChildren< WeaponScript >();
 				if( weapon != null )
@@ -81,34 +81,46 @@ public class PlayerScript : MonoBehaviour {
 			}
 
 			// shield
-			bool shieldBool = Input.GetButton( shieldButton );
-			if( Input.GetKey( shieldKey ) )
-			   shieldBool = true;
-
-			if( shieldBool )
+			if( Input.GetButtonDown( shieldButton ) && currentShield > 0.0f )
 			{
-				currentShield = currentShield - Time.deltaTime;
+				networkView.RPC( "setShieldOn", RPCMode.AllBuffered );
 			}
 
-			if( shield && currentShield > 0.0f )
+			if( Input.GetButtonUp( shieldButton ) || ( isShielded && currentShield <= 0.0f ) )
 			{
-				SpriteRenderer sr = shield.GetComponent< SpriteRenderer >();
-				sr.enabled = shieldBool;
-				CircleCollider2D cc = shield.GetComponent< CircleCollider2D >();
-				cc.enabled = shieldBool;
-				isShielded = shieldBool;
-
-				ShieldBarScript sbs = shieldBar.GetComponent< ShieldBarScript >();
-				sbs.barDisplay = (currentShield / maxShield) * 100.0f;
-
-			} else {
-				SpriteRenderer sr = shield.GetComponent< SpriteRenderer >();
-				sr.enabled = false;
-				CircleCollider2D cc = shield.GetComponent< CircleCollider2D >();
-				cc.enabled = false;
-				isShielded = false;
+				networkView.RPC ( "setShieldOff", RPCMode.AllBuffered );
 			}
+
 		}
+
+		if( isShielded )
+		{
+			currentShield = currentShield - Time.deltaTime;		
+			ShieldBarScript sbs = shieldBar.GetComponent< ShieldBarScript >();
+			sbs.barDisplay = (currentShield / maxShield) * 100.0f;
+		}
+	}
+
+	[RPC]
+	void setShieldOn()
+	{
+		isShielded = true;
+
+		SpriteRenderer sr = shield.GetComponent< SpriteRenderer >();
+		sr.enabled = true;
+		CircleCollider2D cc = shield.GetComponent< CircleCollider2D >();
+		cc.enabled = true;
+	}
+
+	[RPC]
+	void setShieldOff()
+	{
+		isShielded = false;
+
+		SpriteRenderer sr = shield.GetComponent< SpriteRenderer >();
+		sr.enabled = false;
+		CircleCollider2D cc = shield.GetComponent< CircleCollider2D >();
+		cc.enabled = false;
 	}
 
 	void FixedUpdate()

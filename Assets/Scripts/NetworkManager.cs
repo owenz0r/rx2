@@ -78,6 +78,8 @@ public class NetworkManager : MonoBehaviour {
 
 		red.GetComponent< HealthScript >().scoreScript = GameObject.Find( "scripts/blueScripts" ).GetComponent< ScoreScript >();
 		red.GetComponent< RespawnScript >().pregameScript = GameObject.Find( "scripts" ).GetComponent< PregameScript >();
+		red.GetComponent< PlayerScript >().shieldBar = GameObject.Find ( "scripts/redScripts" ).transform;
+		red.GetComponentInChildren< WeaponScript >().wellManager = GameObject.Find( "scripts" ).GetComponent< WellManager >();
 		GetComponent< PregameScript >().startCountdown();
 	}
 
@@ -133,6 +135,8 @@ public class NetworkManager : MonoBehaviour {
 
 		blue.GetComponent< HealthScript >().scoreScript = redScripts.GetComponent< ScoreScript >();
 		blue.GetComponent< RespawnScript >().pregameScript = scripts.GetComponent< PregameScript >();
+		blue.GetComponent< PlayerScript >().shieldBar = blueScripts.transform;
+		blue.GetComponentInChildren< WeaponScript >().wellManager = scripts.GetComponent< WellManager >();
 		networkView.RPC( "startGame", RPCMode.AllBuffered );
 	}
 

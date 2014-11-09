@@ -19,7 +19,7 @@ public class WellManager : MonoBehaviour {
 			playerIdx = 1;
 		}
 		if( wellArray[ playerIdx ] )
-			Destroy( wellArray[ playerIdx].gameObject );
+			Network.Destroy( wellArray[ playerIdx ].gameObject );
 
 		wellArray[ playerIdx ] = well;
 	}

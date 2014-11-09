@@ -36,8 +36,7 @@ public class WeaponScript : MonoBehaviour {
 	{
 		if( CanShootWell )
 		{
-			var wellTransform = Instantiate ( wellPrefab ) as Transform;
-			wellTransform.position = transform.position;
+			var wellTransform = Network.Instantiate( wellPrefab, transform.position, Quaternion.identity, 0 ) as Transform;
 			
 			PushScript push = wellTransform.GetComponent< PushScript >();
 			if( weaponColour == "red" )
@@ -45,9 +44,17 @@ public class WeaponScript : MonoBehaviour {
 
 			push.force *= shotForce;
 
-			wellManager.addWell ( wellTransform, weaponColour );
+			//wellManager.addWell ( wellTransform, weaponColour );
+			networkView.RPC ( "addWellToManager", RPCMode.AllBuffered, wellTransform.networkView.viewID, weaponColour );
 			wellCooldown = wellShootingRate;
 		}
+	}
+
+	[RPC]
+	public void addWellToManager( NetworkViewID viewId, string weaponColour )
+	{
+		var well = NetworkView.Find ( viewId ).gameObject.transform;
+		wellManager.addWell ( well, weaponColour );
 	}
 
 	public void Attack()
@@ -96,8 +103,6 @@ public class WeaponScript : MonoBehaviour {
 			else
 			{
 				var shotTransform = Network.Instantiate( shotPrefab, transform.position, Quaternion.identity, 0 ) as Transform;
-				//var shotTransform = Instantiate ( shotPrefab ) as Transform;
-				//shotTransform.position = transform.position;
 
 				MoveScript move = shotTransform.gameObject.GetComponent< MoveScript >();
 				if( move != null )
@@ -128,6 +133,9 @@ public class WeaponScript : MonoBehaviour {
 	{
 		get
 		{
+			print( GetComponentInParent< PlayerScript >().hasShieldUp );
+			print( pregameScript.isPregame );
+			print( respawnScript.respawning );
 			return ( wellCooldown <= 0.0f &&
 			        !GetComponentInParent< PlayerScript >().hasShieldUp &&
 			        !pregameScript.isPregame &&

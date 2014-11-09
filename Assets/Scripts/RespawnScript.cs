@@ -11,7 +11,7 @@ public class RespawnScript : MonoBehaviour {
 	private float delay;
 	private Vector3 startPosition;
 
-	void Start()
+	void Awake()
 	{
 		delay = respawnDelay;
 		startPosition = transform.position;
