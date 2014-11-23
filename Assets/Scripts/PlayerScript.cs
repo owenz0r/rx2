@@ -17,6 +17,8 @@ public class PlayerScript : MonoBehaviour {
 	private bool isShielded = false;
 	private float maxShield = 5.0f;
 	private float currentShield = 5.0f;
+	private float wellForce = 0.0f;
+	private float wellForceDelta = 0.0f;
 
 	private KeyCode upKey;
 	private KeyCode downKey;
@@ -29,6 +31,9 @@ public class PlayerScript : MonoBehaviour {
 	private string shieldButton;
 	private string wellButton;
 	private string wellTrigger;
+
+	public enum ControlStyle { KeyboardMouse, Controller };
+	public ControlStyle currentControlStyle;
 
 	void Start()
 	{
@@ -43,16 +48,89 @@ public class PlayerScript : MonoBehaviour {
 		shieldKey = KeyCode.LeftControl;
 	}
 
+	public void setControls( ControlStyle style )
+	{
+		if( style == ControlStyle.KeyboardMouse )
+		{
+			currentControlStyle = ControlStyle.KeyboardMouse;
+			setKeyboardMouseControls();
+		} else {
+			currentControlStyle = ControlStyle.Controller;
+			setXBoxControls();
+		}
+	}
+
+	void setKeyboardMouseControls()
+	{
+		upKey = KeyCode.W;
+		downKey = KeyCode.S;
+		wellKey = KeyCode.E;
+		//shootKey = KeyCode.Mouse0;
+		//shieldKey = KeyCode.Mouse1;
+	}
+
+	void setXBoxControls()
+	{
+		axis = "P1_Vertical";
+		fireButton = "P1_R_Trigger";
+		shieldButton = "P1_R_Shoulder";
+		wellTrigger = "P1_L_Trigger";
+		wellButton = "P1_X";
+	}
+
 	void Update()
 	{
 		if( networkView.isMine )
 		{
-			float inputY = Input.GetAxis ( axis );
-			if (Input.GetKey( upKey ) )
-				inputY = 1.0f;
-			if( Input.GetKey ( downKey ) )
-				inputY = -1.0f;
-			movement = new Vector2( 0, speed.y * inputY );
+			float inputY = 0.0f;
+			bool shoot = false;
+			bool shootWell = false;
+			bool shieldButtonDown = false;
+			bool shieldButtonUp = false;
+
+			if( currentControlStyle == ControlStyle.KeyboardMouse )
+			{
+				if (Input.GetKey( upKey ) )
+					inputY = 1.0f;
+				if( Input.GetKey ( downKey ) )
+					inputY = -1.0f;
+				movement = new Vector2( 0, speed.y * inputY );
+
+				if( Input.GetMouseButton( 0 ) )
+					shoot = true;
+
+				if( Input.GetKey( wellKey ) )
+				{
+					wellForceDelta += Time.deltaTime;
+					if( wellForceDelta > 3.0f )
+						wellForceDelta = 3.0f;
+				}
+
+				if( Input.GetKeyUp( wellKey ) )
+				{
+					wellForce = wellForceDelta / 3.0f;
+					shootWell = true;
+					wellForceDelta = 0.0f;
+				}
+
+				if( Input.GetMouseButtonDown( 1 ) )
+					shieldButtonDown = true;
+				if( Input.GetMouseButtonUp( 1 ) )
+					shieldButtonUp = true;
+			}
+			else
+			{
+				inputY = Input.GetAxis ( axis );
+				movement = new Vector2( 0, speed.y * inputY );
+
+				if( Input.GetAxis ( fireButton ) > 0 )
+					shoot = true;
+
+				shootWell = Input.GetButton( wellButton );
+				wellForce = Input.GetAxis( wellTrigger );
+				shieldButtonDown = Input.GetButtonDown( shieldButton );
+				shieldButtonUp = Input.GetButtonUp( shieldButton );
+			}
 
 			// translation
 			if( transform.position.y > topBorder )
@@ -60,12 +138,7 @@ public class PlayerScript : MonoBehaviour {
 			if( transform.position.y < bottomBorder )
 				transform.position = new Vector3( transform.position.x, bottomBorder, transform.position.z );
 
-			// shooting
-			float shoot = Input.GetAxis ( fireButton );
-			if( Input.GetKey( shootKey ) )
-			   shoot = 1.0f;
-
-			if ( shoot > 0.0f )
+			if ( shoot )
 			{
 				WeaponScript weapon = GetComponentInChildren< WeaponScript >();
 				if( weapon != null )
@@ -73,20 +146,20 @@ public class PlayerScript : MonoBehaviour {
 			}
 
 			// well shot
-			if( Input.GetButtonDown( wellButton ) )
+			if( shootWell )
 			{
 				WeaponScript weapon = GetComponentInChildren< WeaponScript >();
 				if( weapon != null )
-					weapon.ShootWell( Input.GetAxis( wellTrigger ) );
+					weapon.ShootWell( wellForce );
 			}
 
 			// shield
-			if( Input.GetButtonDown( shieldButton ) && currentShield > 0.0f )
+			if( shieldButtonDown && currentShield > 0.0f )
 			{
 				networkView.RPC( "setShieldOn", RPCMode.AllBuffered );
 			}
 
-			if( Input.GetButtonUp( shieldButton ) || ( isShielded && currentShield <= 0.0f ) )
+			if( shieldButtonUp || ( isShielded && currentShield <= 0.0f ) )
 			{
 				networkView.RPC ( "setShieldOff", RPCMode.AllBuffered );
 			}

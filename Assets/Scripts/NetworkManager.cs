@@ -19,6 +19,8 @@ public class NetworkManager : MonoBehaviour {
 	private string gameName = "OMcN_RX2";
 	private bool refreshing = false;
 	private HostData[] hostData;
+	
+	private PlayerScript.ControlStyle selectedControlStyle;
 
 	void Start()
 	{
@@ -91,6 +93,7 @@ public class NetworkManager : MonoBehaviour {
 		GameObject blueScripts = GameObject.Find ( "scripts/blueScripts"  );
 		GameObject redScripts = GameObject.Find ( "scripts/redScripts"  );
 		bluePlayer.GetComponent< PlayerScript >().shieldBar = blueScripts.transform;
+		bluePlayer.GetComponent< PlayerScript >().setControls( selectedControlStyle );
 		bluePlayer.GetComponent< HealthScript >().scoreScript = redScripts.GetComponent< ScoreScript >();
 		bluePlayer.GetComponent< HealthScript >().gamestateManager = scripts.GetComponent< GamestateManager >();
 		bluePlayer.GetComponent< RespawnScript >().pregameScript = scripts.GetComponent< PregameScript >();
@@ -116,6 +119,7 @@ public class NetworkManager : MonoBehaviour {
 		GameObject blueScripts = GameObject.Find ( "scripts/blueScripts"  );
 		GameObject redScripts = GameObject.Find ( "scripts/redScripts"  );
 		redPlayer.GetComponent< PlayerScript >().shieldBar = redScripts.transform;
+		redPlayer.GetComponent< PlayerScript >().setControls( selectedControlStyle );
 		redPlayer.GetComponent< HealthScript >().scoreScript = blueScripts.GetComponent< ScoreScript >();
 		redPlayer.GetComponent< HealthScript >().gamestateManager = scripts.GetComponent< GamestateManager >();
 		redPlayer.GetComponent< RespawnScript >().pregameScript = scripts.GetComponent< PregameScript >();
@@ -146,6 +150,16 @@ public class NetworkManager : MonoBehaviour {
 		MasterServer.RegisterHost( gameName, "Owen's Awesome Game", "Isn't is awesome?" );
 	}
 
+	void setKeyboardMouseControls()
+	{
+		selectedControlStyle = PlayerScript.ControlStyle.KeyboardMouse;
+	}
+
+	void setXBoxControls()
+	{
+		selectedControlStyle = PlayerScript.ControlStyle.Controller;
+	}
+
 	void OnGUI()
 	{
 		if( !Network.isClient && !Network.isServer)
@@ -165,6 +179,24 @@ public class NetworkManager : MonoBehaviour {
 			{
 				print( "Refreshing..." );
 				refreshHostList();
+			}
+
+			if( GUI.Button( new Rect( startServerButtonX, 
+			                         startServerButtonY + (startServerButtonH + (0.02f * Screen.height)) * 2 , 
+			                         startServerButtonW, 
+			                         startServerButtonH ), "Keyboard+Mouse" ) )
+			{
+				print( "Setting Keyboard+Mouse..." );
+				setKeyboardMouseControls();
+			}
+
+			if( GUI.Button( new Rect( startServerButtonX, 
+			                         startServerButtonY + (startServerButtonH + (0.02f * Screen.height)) * 3 , 
+			                         startServerButtonW, 
+			                         startServerButtonH ), "XBox Controller" ) )
+			{
+				print( "Setting XBox Controller..." );
+				setXBoxControls();
 			}
 			
 			if( hostData != null )
