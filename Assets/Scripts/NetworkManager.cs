@@ -101,6 +101,7 @@ public class NetworkManager : MonoBehaviour {
 		WeaponScript wp = bluePlayer.GetComponentInChildren< WeaponScript >();
 		wp.pregameScript = scripts.GetComponent< PregameScript >();
 		wp.wellManager = scripts.GetComponent< WellManager >();
+		scripts.GetComponent<PowerupsHelper>().enabled = true;
 		//wp.gamestateManager = scripts.GetComponent< GamestateManager >();
 	}
 

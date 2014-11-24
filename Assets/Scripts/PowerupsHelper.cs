@@ -25,8 +25,9 @@ public class PowerupsHelper : MonoBehaviour {
 				case 1: prefab = rechargePrefab; break;
 				default : prefab = trishotPrefab; break;
 			}
-			Transform pup1 = Instantiate( prefab ) as Transform;
-			Transform pup2 = Instantiate( prefab ) as Transform;
+
+			Transform pup1 = Network.Instantiate( prefab, Vector3.zero, Quaternion.identity, 0 ) as Transform;
+			Transform pup2 = Network.Instantiate( prefab, Vector3.zero, Quaternion.identity, 0 ) as Transform;
 
 			MoveScript ms1 = pup1.GetComponent< MoveScript >();
 			MoveScript ms2 = pup2.GetComponent< MoveScript >();
